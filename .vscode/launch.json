@@ -1,0 +1,72 @@
+{
+    // VS Code launch configurations for running and debugging uvicorn under WSL.
+    // By default this assumes an ASGI app exposed as `app` in `main.py` (i.e. "main:app").
+    // Edit the `args` or `program` fields if your entrypoint differs.
+    "version": "0.2.0",
+    "configurations": [
+        {
+    "name": "FastAPI",
+    "type": "python",
+    "request": "launch",
+    "module": "uvicorn",
+    "args": [
+        "main:app",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "8000",
+        "--reload"
+    ],
+    "jinja": true
+},
+        {
+            "name": "Debug: Uvicorn (module, reload)",
+            "type": "debugpy",
+            "request": "launch",
+            // Runs: python -m uvicorn main:app --host 127.0.0.1 --port 8000 --reload
+            "module": "uvicorn",
+            "args": [
+                "main:app",
+                "--host",
+                "127.0.0.1",
+                "--port",
+                "8000",
+                "--reload"
+            ],
+            "justMyCode": false,
+            "console": "integratedTerminal"
+        },
+
+        {
+            "name": "Debug: Uvicorn (program path)",
+            "type": "debugpy",
+            "request": "launch",
+            // Alternative: point `program` to the uvicorn binary inside a virtual environment.
+            // On WSL this might be ${workspaceFolder}/.venv/bin/uvicorn or similar.
+            "program": "${workspaceFolder}/venv/bin/uvicorn",
+            "args": [
+                "main:app",
+                "--host",
+                "127.0.0.1",
+                "--port",
+                "8000"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+
+        {
+            "name": "Debug: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Run uvicorn (module) with reload",
+            "configurations": ["Debug: Uvicorn (module, reload)"]
+        }
+    ]
+}
